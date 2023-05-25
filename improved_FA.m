@@ -1,21 +1,24 @@
 A=zeros(49,49);
 for i=1:71
-A(LL(i,1),LL(i,2))=LL(i,3); %LL为城市对矩阵加一列飞行时间
+A(LL(i,1),LL(i,2))=LL(i,3); %LL为城市对矩阵加一列飞行时间数据
 end
 B=find(A==0);
 A(B)=inf; %构造邻接矩阵
 for i=1:49
 A(i,i)=0;
 end
+
+A1=zeros(49,49)
 for i=1:71
-A1(LL2(i,1),LL2(i,2))=LL2(i,3); %LL2为起飞时间数据（由于太长， 此处
-不给出， 详情见压缩文件； LL3同理）
+A1(LL2(i,1),LL2(i,2))=LL2(i,3); %LL2为起飞时间数据
 end
 B=find(A1==0);
 A1(B)=inf; %构造起飞时间矩阵
 for i=1:49
 A1(i,i)=0;
 end
+
+
 A2=zeros(49,49);
 for i=1:71
 A2(LL3(i,1),LL3(i,2))=LL3(i,3); %LL3为落地时间数据
@@ -25,23 +28,25 @@ A2(B)=inf; %构造落地时间矩阵
 for i=1:49
 A2(i,i)=0;
 end
-%第二题第（1） 问
+
+
 [D,path]=floyd(A,A1,A2);
 [x,y]=find(D<=360);
 disp(['6小时之内可到达的线路:',num2str(size(x,1)-49)])
-%第二题第（2） 问
+
 [D,path,P]=floyd(A,A1,A2);
 Q=find(P>99999);
 P(Q)=-1;
 disp(['转机次数最多的线路中转机次数： ',num2str(max(max(P)))])
 [x1,x2]=find(P==max(max(P)));
 disp(['转机次数最多的线路条数： ',num2str(size(x1,1))])
-%第二题第（3） 问
+
 [D,path,P]=floyd(A,A1,A2);
 Q=find(D>99999);20
 D(Q)=-1;
 [v1,v2]=find(D==max(max(D)));
 road(path,v1,v2)
+ 
 %改进的Floyd算法
 function [D,path,P]=floyd(a,A1,A2)
 n=size(a,1);
